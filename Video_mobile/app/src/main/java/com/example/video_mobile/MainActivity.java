@@ -75,48 +75,6 @@ public class MainActivity extends AppCompatActivity {
         fileNames.clear();
 
 
-        /*// 清空names、descs、fileNames集合里原有的数据。
-        names.clear();
-        //descs.clear();
-        fileNames.clear();
-        // 通过ContentResolver查询所有图片信息
-        Cursor cursor = getContentResolver().query(
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
-        while (cursor.moveToNext()) {
-            // 获取音频的显示名
-            String name = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-
-            // 获取音频的保存位置的数据
-            byte[] data = cursor.getBlob(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-            // 将图片名添加到names集合中
-            names.add(name);
-            // 将图片保存路径添加到fileNames集合中
-            fileNames.add(new String(data, 0, data.length - 1));
-        }
-        // 创建一个List集合，List集合的元素是Map
-        List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
-        // 将names集合对象的数据转换到Map集合中
-        for (int i = 0; i < names.size(); i++) {
-            Map<String, Object> listItem = new HashMap<String, Object>();
-            listItem.put("name", names.get(i));
-            listItems.add(listItem);
-        }
-        // 创建一个SimpleAdapter
-        SimpleAdapter simpleAdapter = new SimpleAdapter(
-                MainActivity.this, listItems, R.layout.item_layout, new String[]{"name"}, new int[]{R.id.video_name});
-        // 为show ListView组件设置Adapter
-        listView.setAdapter(simpleAdapter);
-
-        // 为show ListView的列表项单击事件添加监听器
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View source, int position, long id) {
-                //点击某一个listview的item，显示该文件的绝对路径
-                Toast.makeText(MainActivity.this, (Integer) fileNames.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
-
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

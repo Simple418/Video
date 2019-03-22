@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -26,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class Broadcast extends AppCompatActivity {
@@ -41,8 +43,13 @@ public class Broadcast extends AppCompatActivity {
     private int screen_width, screen_height;
     private AudioManager audioManager;//音量控制器
     private boolean  is_full= false;//判断屏幕转向
+    private RelativeLayout R1;
 
     private int currentPosition;
+
+    Handler mHandler = new Handler();
+    Runnable mRunnable;
+
 
 
 
@@ -52,6 +59,13 @@ public class Broadcast extends AppCompatActivity {
         //实例化音量控制器
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         setContentView(R.layout.activity_broadcast);
+
+       /* mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                R1.setVisibility(View.INVISIBLE);
+            }
+        };*/
 
         initView();
         initData();
@@ -110,9 +124,12 @@ public class Broadcast extends AppCompatActivity {
         // 判断当前屏幕的横竖屏状态
         int screenOritentation = getResources().getConfiguration().orientation;
 
+       // String screen = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE  ? "横向屏幕" : "竖向屏幕";
+        //Toast.makeText(this , "系统的屏幕方向发生改变\n" + "修改后的屏幕方向为:" + screen, Toast.LENGTH_LONG ).show();
+
         if (screenOritentation == Configuration.ORIENTATION_LANDSCAPE) {
             //横屏时处理
-            setVideoScreenSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            setVideoScreenSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
             volume_seek.setVisibility(View.VISIBLE);
             volume_Image.setVisibility(View.VISIBLE);
             is_full = true;
@@ -121,7 +138,7 @@ public class Broadcast extends AppCompatActivity {
             getWindow().addFlags((WindowManager.LayoutParams.FLAG_FULLSCREEN));
         } else {
             //竖屏时处理
-            setVideoScreenSize(ViewGroup.LayoutParams.MATCH_PARENT, dip2px(Broadcast.this,300));
+            setVideoScreenSize(ViewGroup.LayoutParams.MATCH_PARENT, dip2px(Broadcast.this,240));
             is_full = false;
             volume_seek.setVisibility(View.GONE);
             volume_Image.setVisibility(View.GONE);
@@ -167,6 +184,8 @@ public class Broadcast extends AppCompatActivity {
         videoLayoutLayoutParams.width = width;
         videoLayoutLayoutParams.height = height;
         videoLayout.setLayoutParams(videoLayoutLayoutParams);
+        //System.out.println("大小"+width+height);
+
 
         //获取视频控件的布局参数
         ViewGroup.LayoutParams videoViewLayoutParams = videoView.getLayoutParams();
@@ -174,11 +193,6 @@ public class Broadcast extends AppCompatActivity {
         videoViewLayoutParams.width = width;
         videoViewLayoutParams.height = height;
         videoView.setLayoutParams(videoViewLayoutParams);
-/*        //设置视频和控制组件的layout
-        ViewGroup.LayoutParams videoLayoutLayoutParams= videoLayout.getLayoutParams();
-        videoLayoutLayoutParams.width = width;
-        videoLayoutLayoutParams.height = height;
-        videoLayout.setLayoutParams(videoLayoutLayoutParams);*/
     }
 
     /**
@@ -207,10 +221,27 @@ public class Broadcast extends AppCompatActivity {
         textView.setText(str);
     }
 
+
     /**
      * 按钮点击事件
      */
     private void initViewOnClick() {
+
+
+        //设置全屏按钮点击事件
+        screen_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(is_full){
+                    //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//控制屏幕横屏
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//控制屏幕竖屏
+                }
+                else {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//控制屏幕横屏
+                }
+            }
+        });
+
         //播放按钮事件
         play_controller_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,19 +307,6 @@ public class Broadcast extends AppCompatActivity {
 
             }
         });
-
-        //设置全屏按钮点击事件
-        screen_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(is_full){
-                    //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//控制屏幕横屏
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//控制屏幕竖屏
-                }else {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//控制屏幕横屏
-                }
-            }
-        });
     }
 
 
@@ -306,6 +324,7 @@ public class Broadcast extends AppCompatActivity {
         DisplayMetrics metric = new DisplayMetrics();
         screen_width = metric.widthPixels;
         screen_height = metric.heightPixels;
+        R1 = findViewById(R.id.R1);
     }
 
 

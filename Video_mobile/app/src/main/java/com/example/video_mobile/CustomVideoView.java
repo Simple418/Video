@@ -10,8 +10,6 @@ public class CustomVideoView extends VideoView {
      *     声明屏幕的大小
      */
 
-    /*int width = 1920;
-    int height = 1080;*/
     public CustomVideoView(Context context) {
         super(context);
     }
@@ -31,6 +29,7 @@ public class CustomVideoView extends VideoView {
       int defaultWidth = getDefaultSize(0,widthMeasureSpec);
       int defaultHeight = getDefaultSize(0,heightMeasureSpec);
       setMeasuredDimension(defaultWidth,defaultHeight);
+
 
 
     }

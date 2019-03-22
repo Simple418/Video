@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/videolayout"
         android:layout_width="match_parent"
-        android:layout_height="340dp">
+        android:layout_height="240dp">
 
         <com.example.video_mobile.CustomVideoView
             android:id="@+id/video_view"
@@ -34,6 +34,7 @@
                 android:thumb="@color/colorAccent" />
 
             <RelativeLayout
+                android:id="@+id/R1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#101010"
