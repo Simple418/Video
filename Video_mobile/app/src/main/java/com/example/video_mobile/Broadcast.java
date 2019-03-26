@@ -29,6 +29,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.video_mobile.Utils.StatusBarUtils;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class Broadcast extends AppCompatActivity {
     public static final int UPDATA_VIDEO_NUM = 1;
@@ -43,34 +48,25 @@ public class Broadcast extends AppCompatActivity {
     private int screen_width, screen_height;
     private AudioManager audioManager;//音量控制器
     private boolean  is_full= false;//判断屏幕转向
-    private RelativeLayout R1;
+    private ImageView show_pc;
 
     private int currentPosition;
-
-    Handler mHandler = new Handler();
-    Runnable mRunnable;
-
 
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtils.setWindowStatusBarColor(Broadcast.this,R.color.theme);
         //实例化音量控制器
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         setContentView(R.layout.activity_broadcast);
 
-       /* mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                R1.setVisibility(View.INVISIBLE);
-            }
-        };*/
-
         initView();
         initData();
         initViewOnClick();
-//
+
+
         /**
          * 本地播放
          */
@@ -172,6 +168,8 @@ public class Broadcast extends AppCompatActivity {
         }
     };
 
+
+
     /**
      * 设置横竖屏时的视频大小
      *
@@ -226,6 +224,7 @@ public class Broadcast extends AppCompatActivity {
      * 按钮点击事件
      */
     private void initViewOnClick() {
+
 
 
         //设置全屏按钮点击事件
@@ -307,6 +306,13 @@ public class Broadcast extends AppCompatActivity {
 
             }
         });
+        show_pc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent wifi = new Intent(Broadcast.this,wifiConnect.class);
+                startActivity(wifi);
+            }
+        });
     }
 
 
@@ -324,7 +330,7 @@ public class Broadcast extends AppCompatActivity {
         DisplayMetrics metric = new DisplayMetrics();
         screen_width = metric.widthPixels;
         screen_height = metric.heightPixels;
-        R1 = findViewById(R.id.R1);
+        show_pc = findViewById(R.id.show_pc);
     }
 
 

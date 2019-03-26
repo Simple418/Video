@@ -1,8 +1,12 @@
 package com.example.video_mobile;
+import com.example.video_mobile.Utils.*;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -63,9 +68,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtils.setWindowStatusBarColor(MainActivity.this,R.color.theme);
         setContentView(R.layout.activity_main);
 
         verifyStoragePermissions();
+       /* TextView textView = findViewById(R.id.textView);
+        textView.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG ); //下划线
+        textView.getPaint().setAntiAlias(true);//抗锯齿*/
 
         btn_add = findViewById(R.id.btn_add);
         listView = findViewById(R.id.ListView);
@@ -78,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                //Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                Intent i = new Intent(Intent.ACTION_PICK);
+                i.setType("video/*");
                 startActivityForResult(i, REQUEST_CODE);
 
             }
@@ -104,12 +115,8 @@ public class MainActivity extends AppCompatActivity {
             names.add(name);
             fileNames.add(videoPath);
 
-          /*  // 创建一个List集合，List集合的元素是Map
-            List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
-            // 将names集合对象的数据转换到Map集合中
-            Map<String, Object> listItem = new HashMap<String, Object>();*/
+
             listItems.clear();
-            //simpleAdapter.notifyDataSetChanged();
              for(int a=0; a<=i; a++) {
                  Map<String, Object> listItem = new HashMap<String, Object>();
                  listItem.put("video_name", names.get(a));
@@ -132,21 +139,19 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("path",path);
                     broadcast.putExtra("path",path);
                     startActivity(broadcast);
-
-
                 }
             });
             cursor.close();
         }
     }
 
-    public String getFileName(String pathandname){
+    public String getFileName(String pathandname) {
 
-        int start=pathandname.lastIndexOf("/");
-        int end=pathandname.lastIndexOf(".");
-        if(start!=-1 && end!=-1){
-            return pathandname.substring(start+1,end);
-        }else{
+        int start = pathandname.lastIndexOf("/");
+        int end = pathandname.lastIndexOf(".");
+        if (start != -1 && end != -1) {
+            return pathandname.substring(start + 1, end);
+        } else {
             return null;
         }
     }
